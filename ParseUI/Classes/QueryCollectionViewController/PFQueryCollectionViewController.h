@@ -77,6 +77,11 @@
  */
 @property (nonatomic, assign, getter=isLoading) BOOL loading;
 
+@property (nonatomic, strong) NSMutableArray *mutableObjects;
+@property (nonatomic, assign) BOOL firstLoad;           // Whether we have loaded the first set of objects
+@property (nonatomic, assign) NSInteger currentPage;    // The last page that was loaded
+@property (nonatomic, assign) NSInteger lastLoadCount;  // The count of objects from the last load.
+
 ///--------------------------------------
 /// @name Creating a PFQueryCollectionViewController
 ///--------------------------------------

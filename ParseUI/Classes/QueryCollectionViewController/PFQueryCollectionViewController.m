@@ -32,11 +32,6 @@ static NSString *const PFQueryCollectionViewCellIdentifier = @"cell";
 static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"nextPageView";
 
 @interface PFQueryCollectionViewController () {
-    NSMutableArray *_mutableObjects;
-
-    BOOL _firstLoad;           // Whether we have loaded the first set of objects
-    NSInteger _currentPage;    // The last page that was loaded
-    NSInteger _lastLoadCount;  // The count of objects from the last load.
 }
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
