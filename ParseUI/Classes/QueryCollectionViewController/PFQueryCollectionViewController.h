@@ -63,6 +63,11 @@
 @property (nonatomic, assign) BOOL paginationEnabled;
 
 /*!
+ @abstract Whether the collection should use the built-in infinite scroll feature. Default - `NO`.
+ */
+@property (nonatomic, assign) BOOL infiniteScrollEnabled;
+
+/*!
  @abstract The number of objects to show per page. Default - `25`.
  */
 @property (nonatomic, assign) NSUInteger objectsPerPage;

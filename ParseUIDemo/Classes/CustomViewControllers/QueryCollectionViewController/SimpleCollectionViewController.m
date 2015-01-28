@@ -36,7 +36,9 @@
 
     self.title = @"Simple Collection";
     self.pullToRefreshEnabled = YES;
-    self.paginationEnabled = NO;
+    self.paginationEnabled = YES;
+    self.infiniteScrollEnabled = YES;
+    self.objectsPerPage = 4;
 
     return self;
 }

@@ -74,6 +74,7 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
     _loadingViewEnabled = YES;
     _paginationEnabled = YES;
     _pullToRefreshEnabled = YES;
+    _infiniteScrollEnabled = NO;
     _lastLoadCount = -1;
 
     _parseClassName = [otherClassName copy];
@@ -276,6 +277,9 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
     if ([self _shouldShowPaginationView] &&
         [kind isEqualToString:UICollectionElementKindSectionFooter] &&
         [indexPath isEqual:[self _indexPathForPaginationReusableView]]) {
+        if (self.infiniteScrollEnabled) {
+            [self loadNextPage];
+        }
         return [self collectionViewReusableViewForNextPageAction:collectionView];
     }
     return nil;
