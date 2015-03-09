@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014, Parse, LLC. All rights reserved.
+ *  Copyright (c) 2015, Parse, LLC. All rights reserved.
  *
  *  You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
  *  copy, modify, and distribute this software in source code or binary form for use
@@ -19,31 +19,10 @@
  *
  */
 
-#import "SubtitleImageTableViewController.h"
+#ifndef ParseStarterProject_Bridging_Header_h
+#define ParseStarterProject_Bridging_Header_h
 
-#import <Parse/PFObject.h>
+#import <Bolts/Bolts.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 
-#import <ParseUI/PFTableViewCell.h>
-
-@implementation SubtitleImageTableViewController
-
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath
-                        object:(PFObject *)object {
-    static NSString *cellIdentifier = @"cell";
-
-    PFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[PFTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-    }
-
-    cell.textLabel.text = object[@"name"];
-    cell.detailTextLabel.text = @"@parseit";
-
-    cell.imageView.image = [UIImage imageNamed:@"Icon.png"];
-    cell.imageView.file = object[@"icon"];
-
-    return cell;
-}
-
-@end
+#endif

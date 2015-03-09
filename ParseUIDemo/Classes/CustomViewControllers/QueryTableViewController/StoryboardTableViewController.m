@@ -19,43 +19,41 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import "StoryboardTableViewController.h"
 
-#import <ParseUI/ParseUIConstants.h>
+#import <Parse/PFObject.h>
+#import <Parse/PFQuery.h>
 
-PFUI_ASSUME_NONNULL_BEGIN
+#import <ParseUI/PFTableViewCell.h>
 
-@class PFImageView;
-@class PFObject;
+@implementation StoryboardTableViewController
 
-/*!
- The `PFCollectionViewCell` class represents a collection view cell which can
- download and display remote images stored on Parse as well as has a default simple text label.
- */
-@interface PFCollectionViewCell : UICollectionViewCell
+#pragma mark -
+#pragma mark Data
 
-/*!
- @abstract A simple lazy-loaded label for the collection view cell.
- */
-@property (nonatomic, strong, readonly) UILabel *textLabel;
+- (PFQuery *)queryForTable {
+    PFQuery *query = [super queryForTable];
+    [query orderByAscending:@"priority"];
+    return query;
+}
 
-/*!
- @abstract The lazy-loaded imageView of the collection view cell.
+#pragma mark -
+#pragma mark TableView
 
- @see PFImageView
- */
-@property (nonatomic, strong, readonly) PFImageView *imageView;
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+                        object:(PFObject *)object {
+    static NSString *cellIdentifier = @"cell";
 
-/*!
- @abstract This method should update all the relevant information inside a subclass of `PFCollectionViewCell`.
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
 
- @discussion This method is automatically called by <PFQueryCollectionViewController> whenever the cell
- should display new information. By default this method does nothing.
+    cell.textLabel.text = object[@"title"];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Priority: %@", object[@"priority"]];
 
- @param object An instance of `PFObject` to update from.
- */
-- (void)updateFromObject:(PFUI_NULLABLE PFObject *)object;
+    return cell;
+}
 
 @end
-
-PFUI_ASSUME_NONNULL_END

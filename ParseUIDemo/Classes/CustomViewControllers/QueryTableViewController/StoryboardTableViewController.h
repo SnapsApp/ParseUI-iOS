@@ -19,31 +19,8 @@
  *
  */
 
-#import "SubtitleImageTableViewController.h"
+#import <ParseUI/ParseUI.h>
 
-#import <Parse/PFObject.h>
-
-#import <ParseUI/PFTableViewCell.h>
-
-@implementation SubtitleImageTableViewController
-
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath
-                        object:(PFObject *)object {
-    static NSString *cellIdentifier = @"cell";
-
-    PFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[PFTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-    }
-
-    cell.textLabel.text = object[@"name"];
-    cell.detailTextLabel.text = @"@parseit";
-
-    cell.imageView.image = [UIImage imageNamed:@"Icon.png"];
-    cell.imageView.file = object[@"icon"];
-
-    return cell;
-}
+@interface StoryboardTableViewController : PFQueryTableViewController
 
 @end

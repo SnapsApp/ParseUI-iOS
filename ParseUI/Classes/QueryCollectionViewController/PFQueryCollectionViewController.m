@@ -37,7 +37,10 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) PFLoadingView *loadingView;
 
-@property (nonatomic, strong) PFActivityIndicatorCollectionReusableView *nextPageView;
+@property (nonatomic, strong) PFActivityIndicatorCollectionReusableView *currentNextPageView;
+
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -45,6 +48,27 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
 
 #pragma mark -
 #pragma mark Init
+
+- (instancetype)initWithCoder:(NSCoder *)decoder {
+    // initWithCoder is usually a parallel designated initializer, as is the case here
+    // It's used by storyboard
+    self = [super initWithCoder:decoder];
+    if (!self) return nil;
+
+    [self _setupWithClassName:nil];
+
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    // This is used by interface builder
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (!self) return nil;
+
+    [self _setupWithClassName:nil];
+
+    return self;
+}
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout className:(NSString *)className {
     self = [super initWithCollectionViewLayout:layout];
@@ -165,7 +189,7 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
 
         if (error) {
             _lastLoadCount = -1;
-            _nextPageView.animating = NO;
+            _currentNextPageView.animating = NO;
         } else {
             _currentPage = page;
             _lastLoadCount = [foundObjects count];
@@ -187,7 +211,7 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
 - (void)loadNextPage {
     if (!self.loading) {
         [self loadObjects:(_currentPage + 1) clear:NO];
-        _nextPageView.animating = YES;
+        _currentNextPageView.animating = YES;
     }
 }
 
@@ -239,15 +263,13 @@ static NSString *const PFQueryCollectionViewNextPageReusableViewIdentifier = @"n
 }
 
 - (UICollectionReusableView *)collectionViewReusableViewForNextPageAction:(UICollectionView *)collectionView {
-    if (!_nextPageView) {
-        _nextPageView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                           withReuseIdentifier:PFQueryCollectionViewNextPageReusableViewIdentifier
-                                                                  forIndexPath:[self _indexPathForPaginationReusableView]];
-        _nextPageView.textLabel.text = NSLocalizedString(@"Load more...", @"Load more...");
-        [_nextPageView addTarget:self action:@selector(loadNextPage) forControlEvents:UIControlEventTouchUpInside];
-    }
-    _nextPageView.animating = self.loading;
-    return _nextPageView;
+    _currentNextPageView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                                  withReuseIdentifier:PFQueryCollectionViewNextPageReusableViewIdentifier
+                                                                         forIndexPath:[self _indexPathForPaginationReusableView]];
+    _currentNextPageView.textLabel.text = NSLocalizedString(@"Load more...", @"Load more...");
+    [_currentNextPageView addTarget:self action:@selector(loadNextPage) forControlEvents:UIControlEventTouchUpInside];
+    _currentNextPageView.animating = self.loading;
+    return _currentNextPageView;
 }
 
 #pragma mark -

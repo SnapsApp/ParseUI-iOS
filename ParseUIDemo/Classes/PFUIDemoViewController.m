@@ -32,6 +32,8 @@
 #import "SectionedTableViewController.h"
 #import "SimpleCollectionViewController.h"
 #import "SimpleTableViewController.h"
+#import "StoryboardCollectionViewController.h"
+#import "StoryboardTableViewController.h"
 #import "SubtitleImageCollectionViewController.h"
 #import "SubtitleImageTableViewController.h"
 
@@ -39,9 +41,11 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
     PFUIDemoTypeSimpleTable,
     PFUIDemoTypePaginatedTable,
     PFUIDemoTypeSectionedTable,
+    PFUIDemoTypeStoryboardTable,
     PFUIDemoTypeSimpleCollection,
     PFUIDemoTypePaginatedCollection,
     PFUIDemoTypeSectionedCollection,
+    PFUIDemoTypeStoryboardCollection,
     PFUIDemoTypeLogInDefault,
     PFUIDemoTypeLogInUsernamePassword,
     PFUIDemoTypeLogInPasswordForgotten,
@@ -85,9 +89,11 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
         _descriptions = @[ @"Simple Table",
                            @"Paginated Table",
                            @"Sectioned Table",
+                           @"Simple Storyboard Table",
                            @"Simple Collection",
                            @"Paginated Collection",
                            @"Sectioned Collection",
+                           @"Simple Storyboard Collection",
                            @"Log In Default",
                            @"Log In Username and Password",
                            @"Log In Password Forgotten",
@@ -112,6 +118,10 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
                            @"Custom Purchase" ];
     }
     return self;
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    return [self init];
 }
 
 #pragma mark -
@@ -158,6 +168,13 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
+        case PFUIDemoTypeStoryboardTable: {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SimpleQueryTableStoryboard" bundle:NULL];
+            StoryboardTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"StoryboardTableViewController"];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
+            break;
         case PFUIDemoTypeSimpleCollection: {
             SimpleCollectionViewController *controller = [[SimpleCollectionViewController alloc] initWithClassName:@"Todo"];
             [self.navigationController pushViewController:controller animated:YES];
@@ -173,6 +190,12 @@ typedef NS_ENUM(uint8_t, PFUIDemoType) {
             [self.navigationController pushViewController:controller animated:YES];
         }
             break;
+        case PFUIDemoTypeStoryboardCollection: {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SimpleQueryCollectionStoryboard" bundle:NULL];
+            StoryboardCollectionViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"StoryboardCollectionViewController"];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
         case PFUIDemoTypeLogInDefault: {
             PFLogInViewController *logInController = [[PFLogInViewController alloc] init];
             logInController.delegate = self;
